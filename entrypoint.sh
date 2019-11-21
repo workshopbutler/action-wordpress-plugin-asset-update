@@ -24,6 +24,11 @@ if [[ -z "$SLUG" ]]; then
 fi
 echo "ℹ︎ SLUG is $SLUG"
 
+if [[ -z "$PLUGIN_DIR" ]]; then
+	PLUGIN_DIR=""
+fi
+echo "PLUGIN_DIR is $PLUGIN_DIR"
+
 if [[ -z "$ASSETS_DIR" ]]; then
 	ASSETS_DIR=".wordpress-org"
 fi
@@ -54,7 +59,7 @@ if [[ -e "$GITHUB_WORKSPACE/.distignore" ]]; then
 
 	# Copy from current branch to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
-	rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/" trunk/ --delete
+	rsync -rc --exclude-from="$GITHUB_WORKSPACE/.distignore" "$GITHUB_WORKSPACE/$PLUGIN_DIR/" trunk/ --delete
 else
 	echo "ℹ︎ Using .gitattributes"
 
@@ -89,7 +94,7 @@ else
 
 	# Copy from clean copy to /trunk, excluding dotorg assets
 	# The --delete flag will delete anything in destination that no longer exists in source
-	rsync -rc "$TMP_DIR/" trunk/ --delete
+	rsync -rc "$TMP_DIR/$PLUGIN_DIR/" trunk/ --delete
 fi
 
 # Copy dotorg assets to /assets
